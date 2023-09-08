@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+android {
+    namespace 'top.x86.compose.more.modifiers'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+
+    implementation platform('androidx.compose:compose-bom:2023.08.00')
+    compileOnly 'androidx.compose.ui:ui'
+    compileOnly 'androidx.compose.ui:ui-graphics'
+    compileOnly 'androidx.compose.ui:ui-tooling-preview'
+    compileOnly 'androidx.compose.material3:material3:1.1.1'
+    compileOnly 'androidx.compose.material3:material3-window-size-class:1.1.1'
+    implementation 'androidx.compose.material3:material3-android:1.2.0-alpha07'
+    compileOnly 'androidx.compose.material3:material3-window-size-class-android:1.2.0-alpha07'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.08.00')
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.InterruptException'
+            artifactId = 'more-modifiers'
+            version = '1.0.0'
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
