@@ -1,7 +1,6 @@
 package top.x86.compose.more.modifiers
 
 import androidx.annotation.FloatRange
-import androidx.annotation.IntRange
 import androidx.compose.foundation.ScrollState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -12,7 +11,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.core.math.MathUtils
 
 fun Modifier.fadingEdgeVertical(scrollState: ScrollState,
                                 @FloatRange(from = 0.0, to = 1.0) edgeLengthPercent: Float = 0.1f,
@@ -54,9 +52,10 @@ fun Modifier.fadingEdgeVertical(scrollState: ScrollState,
         val bottomEdgeAlphaRate = Math.atan(p2)/(Math.PI/2.0)
         val bottomEdgeAlpha = (bottomEdgeMaxAlpha * bottomEdgeAlphaRate).toFloat()
         //底部边缘
+
         drawRect(
             brush = Brush.verticalGradient(
-                listOf(Color.Transparent,Color.Transparent.copy(alpha = MathUtils.clamp(bottomEdgeAlpha, 0f, 1f))),
+                listOf(Color.Transparent,Color.Transparent.copy(alpha = clamp(bottomEdgeAlpha, 0f, 1f))),
                 startY = bottomEdgeTopOffset,
                 endY =  bottomEdgeTopOffset+bottomEdgeLength
             ),
@@ -65,6 +64,18 @@ fun Modifier.fadingEdgeVertical(scrollState: ScrollState,
             blendMode = BlendMode.SrcOver,
         )
     }
+
+inline fun <reified T> clamp(x: T, min: T, max: T): T
+    where T: Comparable<T>
+{
+    return if (x > max) {
+        max
+    } else if (x < min) {
+        min
+    } else {
+        x
+    }
+}
 
 fun Modifier.fadingEdgeHorizontal(scrollState: ScrollState,
                                   @FloatRange(from = 0.0, to = 1.0) edgeLengthPercent: Float = 0.1f,
@@ -109,7 +120,7 @@ fun Modifier.fadingEdgeHorizontal(scrollState: ScrollState,
         //右侧边缘
         drawRect(
             brush = Brush.horizontalGradient(
-                listOf(Color.Transparent,Color.Transparent.copy(alpha = MathUtils.clamp(rightEdgeAlpha, 0f, 1f))),
+                listOf(Color.Transparent,Color.Transparent.copy(alpha = clamp(rightEdgeAlpha, 0f, 1f))),
                 startX = rightEdgeOffsetX,
                 endX =  rightEdgeOffsetX+rightEdgeLength
             ),
