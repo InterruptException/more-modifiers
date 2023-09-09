@@ -62,7 +62,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.InterruptException'
             artifactId = 'more-modifiers'
-            version = '1.0.2'
+            version = '1.0.3'
 
             afterEvaluate {
                 from components.release
